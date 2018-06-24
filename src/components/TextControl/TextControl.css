@@ -1,0 +1,14 @@
+.TextControl button {
+    display: block;
+    font: inherit;
+    padding: 5px;
+    margin: 0 5px;
+    width: 80px;
+    cursor: pointer;
+    outline: none;
+}
+
+.TextControl .more {
+    background-color: #8F5E1E;
+    color: white;
+}
