@@ -8,6 +8,7 @@ import Header from '../../components/Header/Header';
 import Home from './Home/Home';
 import About from './About/About';
 import DisplayPdf from './DisplayPdf/DisplayPdf';
+import Upload from './Upload/Upload';
 
 class Main extends Component {
 	render() {
@@ -18,6 +19,7 @@ class Main extends Component {
           <Route exact path='/' component={Home}/>
           <Route path='/about' component={About}/>
           <Route path='/display' component={DisplayPdf}/>
+					<Route path='/upload' component={Upload}/>
         </Switch>
       </div>
 		)
