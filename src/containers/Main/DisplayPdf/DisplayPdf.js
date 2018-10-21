@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { Document, Page } from 'react-pdf';
+// import { Document, Page } from 'react-pdf';
 import axios from 'axios';
-import Doc from '../../../components/Doc/Doc';
+import Document from '../../../components/pdf/Document';
+
 class DisplayPdf extends Component {
 
 	state = {
 		docs: [],
 		selectedId: null,
+		loadedDoc: null,
 		error: false
 	}
 
@@ -29,7 +31,14 @@ class DisplayPdf extends Component {
 	}
 
 	docSelectedHandler = (id) => {
-		this.setState({ selectedDocId: id });
+		console.log('DisplayPdf::docSelectedHandler() clicked with id=' + id + ', selectedId = ' + this.state.selectedId)
+
+		if(!this.state.selectedId || (this.state.selectedId && this.state.selectedId !== id)) {
+			axios.get('/docs/' + id).then(response => {
+				console.log('DisplayPdf::docSelectedHandler() return res=%s',response.data.name);
+				this.setState({ loadedDoc: response.data, selectedId: id });
+			});
+		} // end if
 	}
 
 	deleteDocHandler = (id) => {
@@ -51,22 +60,29 @@ class DisplayPdf extends Component {
 
 					<div> {doc._id} - {doc.created} - {doc.name}</div>
 
-					<button onclick={() => this.deleteDocHandler(doc._id)}>Remove</button>
+					<button onClick={() => this.deleteDocHandler(doc._id)}>Remove</button>
 
 				</li>;
 			});
 		}
 
+		let selectedDoc = null;
+		if(this.state.loadedDoc) {
+			selectedDoc = (
+				<section>
+					<Document doc={this.state.loadedDoc} />
+				</section>
+			)
+		}
+
 		return(
 			<div>
-        <h1>DisplayPdf</h1>
+        <h1>Test Display</h1>
 				<ul>
 					{docs}
 				</ul>
+				{selectedDoc}
 
-				<section>
-					<Doc id={this.state.selectedDocId} />
-				</section>
       </div>
 		)
 	}
